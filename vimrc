@@ -6,6 +6,7 @@ Plug 'vimwiki/vimwiki'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'airblade/vim-gitgutter'
+Plug 'nightsense/cosmic_latte'
 call plug#end()
 
 set termguicolors

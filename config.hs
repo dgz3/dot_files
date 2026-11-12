@@ -55,6 +55,15 @@ myFocusFollowsMouse  = True
 myClickJustFocuses   = False
 myBorderWidth        = 2
 myModMask            = mod4Mask
+myWorkspaces         = [ "<fc=#ff79c6>1</fc>"
+                        ,"<fc=#ff79c6>2</fc>"
+                        ,"<fc=#ff79c6>3</fc>"
+                        ,"<fc=#ff79c6>4</fc>"
+                        ,"<fc=#ff79c6>5</fc>"
+                        ,"<fc=#ff79c6>6</fc>"
+                        ,"<fc=#ff79c6>7</fc>"
+                        ,"<fc=#ff79c6>8</fc>"
+                        ,"<fc=#ff79c6>9</fc>" ]
 -- myWorkspaces         = [ "<fc=#ff79c6>¹</fc>main"
 --                         ,"<fc=#ff79c6>²</fc>dev"
 --                         ,"<fc=#ff79c6>³</fc>dev"
@@ -64,15 +73,15 @@ myModMask            = mod4Mask
 --                         ,"<fc=#ff79c6>⁷</fc>edit"
 --                         ,"<fc=#ff79c6>⁸</fc>virt"
 --                         ,"<fc=#ff79c6>⁹</fc>misc" ]
-myWorkspaces         = [ "<fc=#ff79c6>¹</fc>main"
-                        ,"0x2"
-                        ,"0x3"
-                        ,"0x4"
-                        ,"<fc=#ff79c6>⁵</fc>net"
-                        ,"0x6"
-                        ,"<fc=#ff79c6>⁷</fc>view"
-                        ,"<fc=#ff79c6>⁸</fc>edit"
-                        ,"0x9" ]
+-- myWorkspaces         = [ "<fc=#ff79c6>¹</fc>main"
+--                         ,"0x2"
+--                         ,"0x3"
+--                         ,"0x4"
+--                         ,"<fc=#ff79c6>⁵</fc>net"
+--                         ,"0x6"
+--                         ,"<fc=#ff79c6>⁷</fc>view"
+--                         ,"<fc=#ff79c6>⁸</fc>edit"
+--                         ,"0x9" ]
 myNormalBorderColor  = "#444444"
 myFocusedBorderColor = "#bd93f9" --"#f5f5dc" #df2c14 "#bd93f9" #f1fa8c
 myFilter = filterOutWsPP [scratchpadWorkspaceTag]
@@ -311,31 +320,34 @@ myConfig = def
 
 mySB       = (statusBarProp "xmobar $HOME/.xmobarrc" (clickablePP $ myFilter myXmobarPP))
 myXmobarPP = def
-      { ppSep              = magenta "  <fn=3>\xf142</fn>  "
+      { ppSep              = green "  <fn=3>\xf142</fn>  "
       , ppWsSep            = "  "
       , ppTitleSanitize    = xmobarStrip
-      , ppCurrent          = yellow . wrap "" "" . xmobarBorder "Top" "#8be9fd" 2
-      , ppHidden           = white . wrap "" ""
+      , ppCurrent          = yellow . wrap "*" "" . xmobarBorder "Top" "#8be9fd" 2
+      , ppHidden           = yellow . wrap "&" ""
       , ppHiddenNoWindows  = lowWhite . wrap "" ""
       , ppUrgent           = red . wrap (yellow "!") (yellow "!")
-      , ppOrder            = \[ws, l, _] -> [ws, l]
+      -- , ppOrder            = \[ws, l, _] -> [ws, l]
       -- , ppOrder            = \[ws, l, _, wins] -> [ws, l]
-      -- , ppOrder            = \[ws, l, _, wins] -> [ws, l, wins]
+      , ppOrder            = \[ws, l, _, wins] -> [ws, l, wins]
       -- , ppOrder            = \[ws, l, _, wins, mocp] -> [ws, l, mocp]
-      -- , ppExtras           = [logTitles formatFocused formatUnfocused]
+      , ppExtras           = [logTitles formatFocused formatUnfocused]
+      -- , ppExtras           = [logClassnames formatFocused formatUnfocused]
       -- , ppExtras           = [xmobarColorL "#000000" "#ffffff" logClassname]
       -- , ppExtras           = [logClassnames formatFocused formatUnfocused, mocpSong]
       }
     where
-      -- formatFocused        = wrap (cyan     "[") (cyan     "]") . magenta . ppWindow
-      -- formatUnfocused      = wrap (lowWhite "[") (lowWhite "]") . blue    . ppWindow
+      formatFocused        = wrap (cyan     "[") (cyan     "]") . yellow   . ppWindow
+      formatUnfocused      = wrap (white "[") (white "]") . lowWhite . ppWindow
 
-      -- ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 15
+      ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 15
       -- mocpSong = xmobarColorL "#8be9fd" "#666666" $ wrapL " " " " $ shortenL 30 $ logCmd "xmobar-mocp.sh" 
 
       magenta  = xmobarColor "#ff79c6" ""
       blue     = xmobarColor "#bd93f9" ""
       cyan     = xmobarColor "#8be9fd" ""
+      -- green    = xmobarColor "#32cd32" ""
+      green    = xmobarColor "#39ff14" ""
       --white    = xmobarColor "#f8f8f2" ""
       white    = xmobarColor "#fffdd0" ""
       yellow   = xmobarColor "#f1fa8c" ""
